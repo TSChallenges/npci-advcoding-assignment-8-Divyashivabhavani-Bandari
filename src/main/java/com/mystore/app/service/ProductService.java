@@ -4,6 +4,9 @@ import com.mystore.app.entity.Product;
 import com.mystore.app.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import com.mystore.app.config.NotFoundException;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +53,10 @@ public class ProductService {
     }
 
     // TODO: Method to search products by name
+    public Product searchByName(String name) throws NotFoundException{
+            return productRepository.findByName(name)
+            .orElseThrow(() -> new NotFoundException("404", "Product Not found by name: " + name));
+    }
 
 
     // TODO: Method to filter products by category

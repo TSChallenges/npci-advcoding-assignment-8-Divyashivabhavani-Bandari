@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.mystore.app.config.NotFoundException;
 
 import java.util.*;
 
@@ -57,6 +58,13 @@ public class ProductController {
     }
 
     // TODO: API to search products by name
+    @GetMapping("/search/{name}")
+    public ResponseEntity<Product> searchByName(@PathVariable("name") String name) throws NotFoundException{
+    
+     Product p = productService.searchByName(name);
+     return ResponseEntity.status(HttpStatus.OK).body(p);
+    
+    }
 
 
     // TODO: API to filter products by category
