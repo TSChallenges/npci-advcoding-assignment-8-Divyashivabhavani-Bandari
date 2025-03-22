@@ -68,12 +68,38 @@ public class ProductController {
 
 
     // TODO: API to filter products by category
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Product>> searchByCategory(@PathVariable("category") String category)throws NotFoundException{                                      
+     List<Product> listOfProducts = productService.searchByCategory(category);
+     return ResponseEntity.status(HttpStatus.OK).body(listOfProducts);
+    }
 
 
     // TODO: API to filter products by price range
+    @GetMapping("/byPrice/{fromPrice}/{toPrice}")
+    public ResponseEntity<List<Product>> filterByPriceRange(@PathVariable("fromPrice") Double fromPrice,
+     @PathVariable("toPrice") Double toPrice)throws NotFoundException{
+        if(toPrice < fromPrice || toPrice < 0 || fromPrice < 0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }else{
+        List<Product> listOfProducts = productService.filterByPriceRange(fromPrice,toPrice);
+        return ResponseEntity.status(HttpStatus.OK).body(listOfProducts);
+        }
+     }
 
 
     // TODO: API to filter products by stock quantity range
+     @GetMapping("/byStockQuantity/{fromRange}/{toRange}")
+    public ResponseEntity<List<Product>> filterByStockQuantityRange(@PathVariable("fromRange") Integer fromRange,
+     @PathVariable("toRange") Integer toRange)throws NotFoundException{
+        if(toRange < fromRange || toRange < 0 || fromRange < 0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }else{
+        List<Product> listOfProducts = productService.filterByStockQuantityRange(fromRange,toRange);
+        return ResponseEntity.status(HttpStatus.OK).body(listOfProducts);
+        }
+     }
+
 
 
 }

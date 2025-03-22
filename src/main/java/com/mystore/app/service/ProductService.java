@@ -10,6 +10,8 @@ import com.mystore.app.config.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
 public class ProductService {
@@ -60,12 +62,36 @@ public class ProductService {
 
 
     // TODO: Method to filter products by category
+    public List<Product> searchByCategory(String category) throws NotFoundException{
+        List<Product> listOfProducts = productRepository.findByCategory(category);
+        if(listOfProducts.isEmpty()){
+            throw new NotFoundException("404","Products not found with category "+category);
+        }
+        return listOfProducts;
+    }
 
 
     // TODO: Method to filter products by price range
+    public List<Product> filterByPriceRange(Double fromPrice,Double toPrice) throws NotFoundException{
+        List<Product> listOfProducts = productRepository.findAll();
+        List<Product> filteredProducts = listOfProducts.stream().filter(x -> x.getPrice() >= fromPrice && x.getPrice() <= toPrice).
+        collect(Collectors.toList());
+        if(filteredProducts.isEmpty()){
+            throw new NotFoundException("404","No products in range of "+fromPrice+" and "+toPrice);
+        }
+        return filteredProducts;
+    }
 
 
     // TODO: Method to filter products by stock quantity range
-
+    public List<Product> filterByStockQuantityRange(Integer fromRange, Integer toRange) throws NotFoundException{
+        List<Product> listOfProducts = productRepository.findAll();
+        List<Product> filteredProducts = listOfProducts.stream().filter(x -> x.getStockQuantity() >= fromRange && 
+                      x.getStockQuantity() <= toRange).collect(Collectors.toList());
+                      if(filteredProducts.isEmpty()){
+                        throw new NotFoundException("404","Products not found in range of "+fromRange+" and "+toRange);
+                      }
+                      return filteredProducts;
+    }
 
 }
