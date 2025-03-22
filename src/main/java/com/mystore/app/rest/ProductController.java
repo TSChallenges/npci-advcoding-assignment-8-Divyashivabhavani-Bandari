@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.mystore.app.config.NotFoundException;
+import org.springframework.data.domain.Page;
+
 
 import java.util.*;
 
@@ -25,9 +27,9 @@ public class ProductController {
         return new ResponseEntity<>(p, HttpStatus.CREATED);
     }
 
-    @GetMapping("")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    @GetMapping("/page/{page}/size/{size}/sortBy/{sortBy}/sorDir/{sortDir}")
+    public Page<Product> getAllProducts(@PathVariable("page") int page, @PathVariable("size") int size, @PathVariable("sortBy") String sortBy, @PathVariable("sortBy") String sortBy) {
+        return productService.getAllProducts(page,size,sortBy);
     }
 
 

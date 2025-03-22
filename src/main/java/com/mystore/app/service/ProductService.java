@@ -6,6 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import com.mystore.app.config.NotFoundException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+
+
+
+
 
 
 import java.util.List;
@@ -27,8 +35,9 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Page<Product> getAllProducts(int page,int size,String sortBy) {
+        Pageable pageable = PageRequest.of(page,size,Sort.by(sortBy));
+        return productRepository.findAll(pageable);
     }
 
     public Product getProduct(Integer id) {
